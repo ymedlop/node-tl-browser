@@ -1,0 +1,25 @@
+{
+  "name": "node-tl-browser",
+  "version": "1.0.0-RC01",
+  "description": "Tool to browse the national Trusted Lists and the European List of Trusted Lists (LOTL).",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ymedlop/node-tl-browser.git"
+  },
+  "author": "Yeray Medina López",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ymedlop/node-tl-browser/issues"
+  },
+  "homepage": "https://github.com/ymedlop/node-tl-browser#readme",
+  "dependencies": {
+    "fs-extra": "^8.1.0",
+    "swagger-client": "^3.9.0",
+    "vorpal": "^1.12.0"
+  }
+}
