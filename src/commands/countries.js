@@ -19,6 +19,7 @@ async function getCountries(apiClient, args, cb) {
       const countries = results.body.content;
       // TODO: output countries table
       console.log(countries);
+      return countries;
     } catch (ex) {
       console.error("getCountries.exception: ", ex);
     }
