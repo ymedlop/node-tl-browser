@@ -48,7 +48,7 @@ function writeOutput(cc, data, serviceFilter, exported = false) {
           item.certificates.forEach(identity => {
             identity.certificateList.forEach(cert => {
               // TODO: Parameter chek expiration by default always
-	      if (cert.certAfter <= new Date().getTime()) {
+	      if (cert.certAfter >= new Date().getTime()) {
               	 const name = `${distFolder}/${cc}_${cert.id.replace(" ", "_").toLowerCase()}.crt`;
                  const content = `-----BEGIN CERTIFICATE-----\r\n${cert.certEncoded}\r\n-----END CERTIFICATE-----`;
                  writeFile(name, content);
