@@ -5,19 +5,19 @@ const dataMock = require("../assets/mocks/tl/DE.json");
 function writeOutput(cc, data, serviceFilter, exported = false) {
   const sp = data.tl.serviceProviders;
   const results = sp.reduce((items, item) => {
-    if (serviceFilter && item.qServiceTypes.includes(serviceFilter)) {
-      item.tspservices.forEach(st => {
-        if (st.qServiceTypes.includes(serviceFilter)) {
-          items.push({
-            id: item.id,
-            name: item.name,
-            country: data.tl.dbCountryName,
-            qServiceTypes: st.qServiceTypes,
-            serviceFilter,
-            certificates: st.digitalIdentification
-          });
-        }
-      });
+    if (serviceFilter) {
+      if (item.qServiceTypes.includes(serviceFilter)) {
+     	 item.tspservices.forEach(st => {
+          		items.push({
+           			 id: item.id,
+           			name: item.name,
+           			country: data.tl.dbCountryName,
+            			qServiceTypes: st.qServiceTypes,
+            			serviceFilter,
+            		 	certificates: st.digitalIdentification
+             });    
+      	});
+      }
     } else {
       item.tspservices.forEach(st => {
         items.push({
