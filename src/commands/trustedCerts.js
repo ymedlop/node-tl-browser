@@ -69,10 +69,11 @@ function writeFile(name, output) {
     if (err) return console.error(err);
     console.log("Writing file was OK: ", name);
     const command = `openssl x509 -in ${name} -outform PEM -out ${name}.pem`;
-    console.log(`Executing commando: ${command}`);
-    exec(command, (err, stdout, stderr) => {
-	if (err) console.error(err);
-	console.log(stdout);
+     setTimeout(() => {
+        exec(command, (err, stdout, stderr) => {
+	   if (err) console.error(err);
+	   else console.log(`Executing commando was OK: ${name}.pem}`);
+	});
     });
   });
 }
