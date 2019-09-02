@@ -48,7 +48,7 @@ function writeOutput(cc, data, serviceFilter, exported = false) {
             identity.certificateList.forEach(cert => {
               const name = `${distFolder}/${cc}_${cert.id
                 .replace(" ", "_")
-                .toLowerCase()}.cert.pem`;
+                .toLowerCase()}.crt`;
               const content = `-----BEGIN CERTIFICATE-----${
                 cert.certEncoded
               }-----END CERTIFICATE-----`;
