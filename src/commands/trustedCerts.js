@@ -1,4 +1,5 @@
 const fs = require("fs-extra");
+const exec = require('child_process').exec;
 const dataMock = require("../assets/mocks/tl/DE.json");
 
 function writeOutput(cc, data, serviceFilter, exported = false) {
@@ -49,9 +50,9 @@ function writeOutput(cc, data, serviceFilter, exported = false) {
               const name = `${distFolder}/${cc}_${cert.id
                 .replace(" ", "_")
                 .toLowerCase()}.crt`;
-              const content = `-----BEGIN CERTIFICATE-----${
+              const content = `-----BEGIN CERTIFICATE-----\r\n${
                 cert.certEncoded
-              }-----END CERTIFICATE-----`;
+              }\r\n-----END CERTIFICATE-----`;
               writeFile(name, content);
             });
           });
@@ -68,6 +69,12 @@ function writeFile(name, output) {
   fs.writeFile(name, output, err => {
     if (err) return console.error(err);
     console.log("Writing file was OK: ", name);
+    const command = `openssl x509 -in ${name} -outform PEM -out ${name}.pem`;
+    console.log(`Executing commando: ${command}`);
+    exec(command, (err, stdout, stderr) => {
+	if (err) console.error(err);
+	console.log(stdout);
+    });
   });
 }
 
