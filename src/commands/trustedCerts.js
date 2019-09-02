@@ -74,7 +74,7 @@ function writeFile(name, output) {
 	   if (err) console.error(err);
 	   else console.log(`Executing commando was OK: ${name}.pem}`);
 	});
-    });
+    }, 1000);
   });
 }
 
