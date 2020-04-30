@@ -111,7 +111,7 @@ async function getTrustedCertsByCC(apiClient, args, cb) {
       console.error("getTrustedCertsByCC.exception: ", ex);
     }
   }
-  cb();
+  cb && cb();
 }
 
 module.exports = getTrustedCertsByCC;

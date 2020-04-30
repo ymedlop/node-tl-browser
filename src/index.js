@@ -2,6 +2,7 @@ const vorpal = require("vorpal")();
 const commands = require("./commands");
 const apiClient = require("./api");
 
+const interactive = vorpal.parse(process.argv, {use: 'minimist'})._ === undefined;
 // Clean stdout output function
 const cleanStdout = () => process.stdout.write("\u001B[2J\u001B[0;0f");
 const cli = {
@@ -15,7 +16,11 @@ const cli = {
       .option("-m, --mock", "Work with mocks results")
       .action((args, cb) => {
         cleanStdout();
-        commands.getCountries(apiClient, args, cb);
+        commands.getCountries(
+          apiClient,
+          args,
+          interactive ? cb() : null
+        );
       });
     // Get trusted list for a given country
     vorpal
@@ -25,7 +30,11 @@ const cli = {
       .option("-s, --service <s>", "Filter by serviceType")
       .action((args, cb) => {
         cleanStdout();
-        commands.getTrustedCertsByCC(apiClient, args, cb);
+        commands.getTrustedCertsByCC(
+          apiClient,
+          args,
+          interactive ? cb() : null
+        );
       });
     // Retrieve all the trusted list
     vorpal
@@ -40,12 +49,23 @@ const cli = {
           await commands.getTrustedCertsByCC(
             apiClient,
             Object.assign({}, args, { cc: item.countryCode }),
-            cb
+            interactive ? cb() : null
           );
         });
       });
     // Set cli delimiter
-    vorpal.delimiter("tl-browser$").show();
+    if (interactive) {
+      vorpal
+        .delimiter("tl-browser$")
+        .show()
+    } else {
+      // argv is mutated by the first call to parse.
+      process.argv.unshift('')
+      process.argv.unshift('')
+      vorpal
+        .delimiter('')
+        .parse(process.argv)
+    }
   }
 }
 
