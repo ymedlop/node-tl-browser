@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-
 'use strict';
-
-const command = require("./../");
-command.init({ updateRemotely: true });
+const command = require("./../src");
+command.init();

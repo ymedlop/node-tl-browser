@@ -1,10 +1,10 @@
 {
   "name": "node-tl-browser",
-  "version": "1.0.0-RC02",
+  "version": "1.0.0-RC03",
   "description": "Tool to browse the national Trusted Lists and the European List of Trusted Lists (LOTL).",
-  "main": "src/index.js",
+  "main": "bin/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node bin/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
