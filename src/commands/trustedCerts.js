@@ -101,8 +101,7 @@ async function getTrustedCertsByCC(apiClient, args, cb) {
     console.log("You are working with real data. Loading ...");
     try {
       const data = { cc };
-      const client = await apiClient();
-      const results = await client.apis["api-browser-controller"].getTLUsingGET(
+      const results = await apiClient.apis["api-browser-controller"].getTLUsingGET(
         data
       );
       const certs = results.body.content;

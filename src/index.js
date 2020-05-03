@@ -5,21 +5,28 @@ const apiClient = require("./api");
 const interactive = vorpal.parse(process.argv, {use: 'minimist'})._ === undefined;
 // Clean stdout output function
 const cleanStdout = () => process.stdout.write("\u001B[2J\u001B[0;0f");
+// Allow Async forEach
+const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
+};
 const cli = {
   // Init function
-  init: () => {
+  init: async () => {
+    const client = await apiClient();
     // Clean stdout
     cleanStdout();
     // Get list of member states countries
     vorpal
       .command("get-countries", "Get list of member states countries.")
       .option("-m, --mock", "Work with mocks results")
-      .action((args, cb) => {
+      .action(async (args, cb) => {
         cleanStdout();
-        commands.getCountries(
-          apiClient,
+        await commands.getCountries(
+          client,
           args,
-          interactive ? cb() : null
+          interactive ? cb : undefined
         );
       });
     // Get trusted list for a given country
@@ -28,12 +35,12 @@ const cli = {
       .option("-e, --exported", "Export to dist folder")
       .option("-m, --mock", "Work with mocks results")
       .option("-s, --service <s>", "Filter by serviceType")
-      .action((args, cb) => {
+      .action(async (args, cb) => {
         cleanStdout();
-        commands.getTrustedCertsByCC(
-          apiClient,
+        await commands.getTrustedCertsByCC(
+          client,
           args,
-          interactive ? cb() : null
+          interactive ? cb : undefined
         );
       });
     // Retrieve all the trusted list
@@ -44,12 +51,16 @@ const cli = {
       .option("-s, --service <s>", "Filter by serviceType")
       .action(async (args, cb) => {
         cleanStdout();
-        const countries = await commands.getCountries(apiClient, args, cb);
-        countries.forEach(async item => {
+        const countries = await commands.getCountries(
+          client,
+          args,
+          interactive ? cb : undefined
+        );
+        await asyncForEach(countries, async item => {
           await commands.getTrustedCertsByCC(
-            apiClient,
+            client,
             Object.assign({}, args, { cc: item.countryCode }),
-            interactive ? cb() : null
+            interactive ? cb : undefined
           );
         });
       });

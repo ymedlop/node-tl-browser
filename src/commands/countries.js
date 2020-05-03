@@ -12,8 +12,7 @@ async function getCountries(apiClient, args, cb) {
     // Mock mode Off
     console.log("You are working with real data. Loading ...");
     try {
-      const client = await apiClient();
-      const results = await client.apis[
+      const results = await apiClient.apis[
         "api-search-controller"
       ].getCountriesListUsingGET();
       const countries = results.body.content;
@@ -24,7 +23,7 @@ async function getCountries(apiClient, args, cb) {
       console.error("getCountries.exception: ", ex);
     }
   }
-  cb();
+  cb && cb();
 }
 
 module.exports = getCountries;
