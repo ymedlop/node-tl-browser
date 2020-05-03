@@ -8,14 +8,16 @@ function writeOutput(cc, data, serviceFilter, exported = false) {
     if (serviceFilter) {
       if (item.qServiceTypes.includes(serviceFilter)) {
      	 item.tspservices.forEach(st => {
-          		items.push({
-           			 id: item.id,
-           			name: item.name,
-           			country: data.tl.dbCountryName,
-            			qServiceTypes: st.qServiceTypes,
-            			serviceFilter,
-            		 	certificates: st.digitalIdentification
-             });    
+              if (st.qServiceTypes.includes(serviceFilter)) {
+                items.push({
+                  id: item.id,
+                  name: item.name,
+                  country: data.tl.dbCountryName,
+                  qServiceTypes: st.qServiceTypes,
+                  serviceFilter,
+                  certificates: st.digitalIdentification
+              });
+            } 
       	});
       }
     } else {
@@ -37,22 +39,19 @@ function writeOutput(cc, data, serviceFilter, exported = false) {
       .then(() => {
         // Write Manifest
         writeJSONFile(`${distFolder}/manifest.json`, results);
-        // Write Original Info
-        writeJSONFile(`${distFolder}/raw.json`, data);
         // Write Service Provider Manifest
         results.forEach(item => {
-          writeJSONFile(
-            `${distFolder}/${item.id.replace(" ", "_").toLowerCase()}.json`,
-            item
-          );
           item.certificates.forEach(identity => {
             identity.certificateList.forEach(cert => {
               // TODO: Parameter chek expiration by default always
-	      if (cert.certAfter >= new Date().getTime()) {
-              	 const name = `${distFolder}/${cc}_${cert.id.replace(" ", "_").toLowerCase()}.crt`;
-                 const content = `-----BEGIN CERTIFICATE-----\r\n${cert.certEncoded}\r\n-----END CERTIFICATE-----`;
-                 writeFile(name, content);
-	      }
+              if (cert.certEncoded && cert.certAfter >= new Date().getTime()) {
+                const kind = serviceFilter ? `-${serviceFilter}` : "";
+                const entityName = item.name.replace(" ", "_").toLowerCase();
+                const certName = cert.certSubjectShortName.replace(/\s/g, "_").toLowerCase();
+                const name = `${distFolder}/${cc}${kind}_${entityName}.${certName}.crt`;
+                const content = `-----BEGIN CERTIFICATE-----\r\n${cert.certEncoded}\r\n-----END CERTIFICATE-----`;
+                writeFile(name, content);
+              }
             });
           });
         });
