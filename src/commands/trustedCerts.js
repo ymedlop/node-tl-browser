@@ -3,7 +3,12 @@ const exec = require('child_process').exec;
 const dataMock = require("../assets/mocks/tl/DE.json");
 
 function parseName(name) {
-  return name.replace(/\\/g, "_").replace(/\//g, "_").replace(" ", "_").toLowerCase();
+  return name
+        .replace(/\\/g, "_")
+        .replace(/\//g, "_")
+        .replace(" ", "_")
+        .replace(/\s/g, "_")
+        .toLowerCase();
 }
 
 function writeOutput(cc, data, serviceFilter, exported = false) {
