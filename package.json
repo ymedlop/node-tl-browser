@@ -1,6 +1,6 @@
 {
   "name": "node-tl-browser",
-  "version": "1.0.0-RC09",
+  "version": "1.0.0-RC10",
   "description": "Tool to browse the national Trusted Lists and the European List of Trusted Lists (LOTL).",
   "main": "bin/index.js",
   "scripts": {

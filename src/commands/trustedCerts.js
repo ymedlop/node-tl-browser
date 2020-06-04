@@ -42,7 +42,7 @@ function writeOutput(cc, data, serviceFilter, exported = false) {
     }
     return items;
   }, []);
-  if (exported && item.lenght) {
+  if (exported) {
     const distFolder = `./dist/${cc}`;
     fs.ensureDir(distFolder)
       .then(() => {
