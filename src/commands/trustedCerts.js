@@ -42,12 +42,12 @@ function writeOutput(cc, data, serviceFilter, exported = false) {
     }
     return items;
   }, []);
-  if (exported) {
+  if (exported && item.lenght) {
     const distFolder = `./dist/${cc}`;
     fs.ensureDir(distFolder)
       .then(() => {
         // Write Manifest
-        writeJSONFile(`${distFolder}/manifest.json`, results);
+        // writeJSONFile(`${distFolder}/manifest.json`, results);
         // Write Service Provider Manifest
         results.forEach(item => {
           item.certificates.forEach(identity => {
